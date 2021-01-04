@@ -3,7 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const myDB = require('./connection');
 const fccTesting = require('./freeCodeCamp/fcctesting.js');
-//const pug = require('pug');
+const session = require('express-session');
+const passport = require('passport');
 
 const app = express();
 
@@ -13,8 +14,17 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'pug')
 
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: true,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.route('/').get((req, res) => {
-  res.render('pug/index.pug');
+  res.render('pug/index.pug', {title: 'Hello', message: 'Please login'});
 });
 
 app.listen(process.env.PORT || 3000, () => {
