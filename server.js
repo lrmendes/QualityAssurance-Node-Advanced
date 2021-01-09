@@ -16,8 +16,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'pug')
 
-console.log("SEGREDO: ", process.env.MONGO_URI);
-
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: true,
@@ -26,10 +24,6 @@ app.use(session({
 }));
 app.use(passport.initialize());
 app.use(passport.session());
-
-app.route('/').get((req, res) => {
-  res.render('pug/index.pug', {title: 'Hello', message: 'Please login'});
-});
 
 // -------------------------
 
